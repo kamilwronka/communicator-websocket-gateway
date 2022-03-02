@@ -6,7 +6,7 @@ metadata:
   annotations:
     konghq.com/protocols: https
     konghq.com/https-redirect-status-code: '308'
-    konghq.com/plugins: communicator-prod-auth0-jwt,communicator-prod-cors
+    konghq.com/plugins: communicator-prod-cors
 spec:
   tls:
     - hosts:

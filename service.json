@@ -12,7 +12,7 @@
       "branch": "master"
     }
   ],
-  "plugins": ["auth0-jwt", "cors"],
+  "plugins": ["cors"],
   "resources": {
     "dev": {
       "limits": {
