@@ -17,7 +17,6 @@ const port = configService.getPort();
 @WebSocketGateway(port, {
   transports: ['websocket'],
   cors: true,
-  path: '/websocket-gateway',
 })
 export class ChatGateway implements OnGatewayConnection {
   constructor(
