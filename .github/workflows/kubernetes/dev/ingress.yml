@@ -11,14 +11,14 @@ metadata:
 spec:
   tls:
     - hosts:
-        - dev.api.communicator.kamilwronka.com
+        - dev.gateway.communicator.kamilwronka.com
       secretName: communicator-dev-tls
   ingressClassName: kong
   rules:
-    - host: dev.api.communicator.kamilwronka.com
+    - host: dev.gateway.communicator.kamilwronka.com
       http:
         paths:
-          - path: /websocket-gateway
+          - path: /
             pathType: ImplementationSpecific
             backend:
               service:
