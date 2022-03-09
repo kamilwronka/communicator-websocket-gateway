@@ -2,10 +2,15 @@ FROM node:latest
 
 WORKDIR /usr/src/app
 
-COPY . .
+COPY package.json ./
+COPY yarn.lock ./
 
 RUN yarn
 
-EXPOSE 8888
+COPY . .
 
-ENTRYPOINT [ "yarn", "start:dev" ]
+RUN yarn build
+
+EXPOSE 4000
+
+ENTRYPOINT [ "yarn", "start:prod" ]

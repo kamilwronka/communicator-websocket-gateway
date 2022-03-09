@@ -14,7 +14,8 @@ import { ServerModule } from './server/server.module';
           cache: true,
           rateLimit: true,
           jwksRequestsPerMinute: 5,
-          jwksUri: 'https://dev-09qylxq6.eu.auth0.com/.well-known/jwks.json',
+          jwksUri:
+            'https://communicator-dev.eu.auth0.com/.well-known/jwks.json',
         });
         const keys = await client.getSigningKeys();
         const key = keys.find((key) => {
@@ -25,7 +26,7 @@ import { ServerModule } from './server/server.module';
           publicKey: key.getPublicKey(),
           verifyOptions: {
             algorithms: ['RS256'],
-            issuer: 'https://dev-09qylxq6.eu.auth0.com/',
+            issuer: 'https://communicator-dev.eu.auth0.com/',
           },
         };
       },

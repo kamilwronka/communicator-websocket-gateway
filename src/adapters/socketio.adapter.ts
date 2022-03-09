@@ -25,6 +25,8 @@ export class AuthenticatedSocketIoAdapter extends IoAdapter {
 
         next();
       } catch (error) {
+        console.log(error);
+
         // verified = null;
         next(new Error('Authentication error'));
       }

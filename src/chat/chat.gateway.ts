@@ -10,9 +10,11 @@ import {
 } from '@nestjs/websockets';
 import { Server } from 'socket.io';
 import { CustomSocket } from 'src/adapters/socketio.adapter';
+import { configService } from 'src/config/config.service';
 import { ChatService } from './chat.service';
 
-@WebSocketGateway(8888, { transports: ['websocket'], cors: true })
+const port = configService.getPort();
+@WebSocketGateway(port, { transports: ['websocket'], cors: true })
 export class ChatGateway implements OnGatewayConnection {
   constructor(
     @Inject('CHAT_SERVICE') private client: ClientProxy,

@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: communicator-websocket-gateway
+  labels:
+    purpose: dev
+spec:
+  containers:
+  - name: communicator-websocket-gateway
+    image: communicator-websocket-gateway
+    ports:
+    - containerPort: 4003
