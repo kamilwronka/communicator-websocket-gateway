@@ -7,17 +7,18 @@ metadata:
     konghq.com/protocols: https
     konghq.com/https-redirect-status-code: '308'
     konghq.com/plugins: communicator-prod-cors
+    konghq.com/strip-path: 'true'
 spec:
   tls:
     - hosts:
-        - prod.websocket-gateway.communicator.kamilwronka.com
+        - prod.api.communicator.kamilwronka.com
       secretName: communicator-prod-tls
   ingressClassName: kong
   rules:
-    - host: prod.websocket-gateway.communicator.kamilwronka.com
+    - host: prod.api.communicator.kamilwronka.com
       http:
         paths:
-          - path: /
+          - path: /websocket-gateway
             pathType: ImplementationSpecific
             backend:
               service:
