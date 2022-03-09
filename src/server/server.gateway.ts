@@ -4,7 +4,7 @@ import {
   WebSocketGateway,
 } from '@nestjs/websockets';
 
-@WebSocketGateway(4000, { cors: true })
+@WebSocketGateway(4001, { cors: true })
 export class ServerGateway {
   @SubscribeMessage('test2')
   handleEvent(@MessageBody() data: string) {

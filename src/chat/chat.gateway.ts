@@ -14,7 +14,11 @@ import { configService } from 'src/config/config.service';
 import { ChatService } from './chat.service';
 
 const port = configService.getPort();
-@WebSocketGateway(port, { transports: ['websocket'], cors: true })
+@WebSocketGateway(port, {
+  transports: ['websocket'],
+  cors: true,
+  path: '/websocket-gateway',
+})
 export class ChatGateway implements OnGatewayConnection {
   constructor(
     @Inject('CHAT_SERVICE') private client: ClientProxy,
