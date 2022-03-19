@@ -3,6 +3,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { JwksClient } from 'jwks-rsa';
 import { ChatModule } from './chat/chat.module';
 import { ServerModule } from './server/server.module';
+import { HealthController } from './health/health.controller';
 
 @Module({
   imports: [
@@ -32,5 +33,6 @@ import { ServerModule } from './server/server.module';
       },
     }),
   ],
+  controllers: [HealthController],
 })
 export class AppModule {}

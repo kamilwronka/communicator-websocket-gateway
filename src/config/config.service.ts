@@ -23,29 +23,20 @@ class ConfigService {
     return parseInt(this.getValue('PORT', true), 10);
   }
 
+  public getHealthCheckPort() {
+    return parseInt(this.getValue('HEALTH_CHECK_PORT', true), 10);
+  }
+
   public isProduction() {
     const env = this.getValue('ENV', false);
     return env !== 'dev';
   }
-
-  public getRMQConfig() {
-    const rmqPort = this.getValue('RABBITMQ_PORT', false);
-    const rmqHost = this.getValue('RABBITMQ_HOST', false);
-    const rmqUser = this.getValue('RABBITMQ_USER', false);
-    const rmqPassword = this.getValue('RABBITMQ_PASSWORD', false);
-
-    const rmqQueue = 'websocket_gateway_queue';
-
-    return { rmqHost, rmqPort, rmqQueue, rmqUser, rmqPassword };
-  }
 }
 
 const configService = new ConfigService(process.env).ensureValues([
-  'RABBITMQ_HOST',
-  'RABBITMQ_PORT',
   'PORT',
-  'RABBITMQ_USER',
-  'RABBITMQ_PASSWORD',
+  'ENV',
+  'HEALTH_CHECK_PORT',
 ]);
 
 export { configService };

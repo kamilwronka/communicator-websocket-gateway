@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gateway
+spec:
+  selector:
+    matchLabels:
+      app: gateway
+  template:
+    metadata:
+      labels:
+        app: gateway
+    spec:
+      serviceAccountName: gateway
+      containers:
+        - name: gateway
+          image: communicator
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "250m"
+            limits:
+              memory: "256Mi"
+              cpu: "500m"
+          ports:
+            - name: container-port
+              containerPort: 4000
+          env:
+            - name: PORT
+              value: "4000"
+            - name: HEALTH_CHECK_PORT
+              value: "4001"
+            - name: ENV
+              value: dev
+
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 4001
+
+          readinessProbe:
+            tcpSocket:
+              port: 4001
+            initialDelaySeconds: 10
+            periodSeconds: 10
