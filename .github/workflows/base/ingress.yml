@@ -1,27 +1,27 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: communicator-websocket-gateway
-  namespace: communicator-dev
+  name: gateway
   annotations:
     konghq.com/protocols: https
-    konghq.com/https-redirect-status-code: '308'
+    konghq.com/https-redirect-status-code: "308"
     konghq.com/plugins: communicator-dev-cors
-    konghq.com/strip-path: 'true'
+    konghq.com/strip-path: "true"
+    konghq.com/preserve-host: "false"
 spec:
   tls:
     - hosts:
-        - dev.api.communicator.kamilwronka.com
-      secretName: communicator-dev-tls
+        - dev.gateway.communicator.kamilwronka.com
+      secretName: tls
   ingressClassName: kong
   rules:
-    - host: dev.api.communicator.kamilwronka.com
+    - host: dev.gateway.communicator.kamilwronka.com
       http:
         paths:
-          - path: /websocket-gateway
+          - path: /
             pathType: ImplementationSpecific
             backend:
               service:
-                name: communicator-websocket-gateway
+                name: gateway
                 port:
                   number: 4000

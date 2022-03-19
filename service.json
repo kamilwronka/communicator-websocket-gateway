@@ -2,6 +2,7 @@
   "app": "communicator",
   "name": "websocket-gateway",
   "containerPort": "4000",
+  "type": "gateway",
   "environments": [
     {
       "name": "dev",
