@@ -1,13 +1,13 @@
 import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { JwksClient } from 'jwks-rsa';
-import { ChatModule } from './chat/chat.module';
+import { GatewayModule } from './gateway/gateway.module';
 import { ServerModule } from './server/server.module';
 import { HealthController } from './health/health.controller';
 
 @Module({
   imports: [
-    ChatModule,
+    GatewayModule,
     ServerModule,
     JwtModule.registerAsync({
       useFactory: async () => {

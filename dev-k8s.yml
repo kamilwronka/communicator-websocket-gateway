@@ -61,7 +61,7 @@ metadata:
   name: gateway-ingress
   namespace: communicator-dev
   annotations:
-    konghq.com/plugins: jwt,communicator-dev-cors
+    konghq.com/plugins: communicator-dev-cors
     konghq.com/strip-path: "true"
     konghq.com/preserve-host: "false"
 spec:

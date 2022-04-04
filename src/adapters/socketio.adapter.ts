@@ -20,7 +20,8 @@ export class AuthenticatedSocketIoAdapter extends IoAdapter {
       const token = socket.handshake.query.token as string;
 
       try {
-        const verified = token && (await this.jwtService.verify(token));
+        const verified =
+          token && (await this.jwtService.verify(token.replace('Bearer ', '')));
         socket.userId = verified.sub.replace('auth0|', '');
 
         next();
