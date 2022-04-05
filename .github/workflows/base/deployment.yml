@@ -17,11 +17,11 @@ spec:
           image: communicator
           resources:
             requests:
-              memory: "128Mi"
-              cpu: "100m"
-            limits:
               memory: "256Mi"
-              cpu: "100m"
+              cpu: "200m"
+            limits:
+              memory: "384Mi"
+              cpu: "200m"
           ports:
             - name: container-port
               containerPort: 4000
@@ -41,5 +41,5 @@ spec:
           readinessProbe:
             tcpSocket:
               port: 4001
-            initialDelaySeconds: 10
-            periodSeconds: 10
+            initialDelaySeconds: 20
+            periodSeconds: 20
