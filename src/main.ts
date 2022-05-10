@@ -18,7 +18,7 @@ async function bootstrap() {
       topic: 'message',
       subscription: 'message-sub',
       client: {
-        projectId: 'communicator-dev-329611',
+        projectId: 'vaulted-acolyte-348710',
       },
     }),
   });
