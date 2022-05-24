@@ -27,9 +27,20 @@ class ConfigService {
     return parseInt(this.getValue('HEALTH_CHECK_PORT', true), 10);
   }
 
-  public isProduction() {
-    const env = this.getValue('ENV', false);
-    return env !== 'dev';
+  public getEnvironment() {
+    return this.getValue('ENV', false);
+  }
+
+  public getPubSubConfig() {
+    const env = this.getEnvironment();
+
+    return {
+      topic: `gateway-${env}`,
+      subscription: `gateway-${env}-sub`,
+      client: {
+        projectId: 'vaulted-acolyte-348710',
+      },
+    };
   }
 }
 

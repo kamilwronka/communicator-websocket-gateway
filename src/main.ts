@@ -10,22 +10,14 @@ import { configService } from './config/config.service';
 async function bootstrap() {
   const port = configService.getPort();
   const healtCheckPort = configService.getHealthCheckPort();
-  const isProduction = configService.isProduction();
+  const pubSubConfig = configService.getPubSubConfig();
 
   const app = await NestFactory.create(AppModule);
   app.connectMicroservice<MicroserviceOptions>({
-    strategy: new GCPubSubServer({
-      topic: 'message',
-      subscription: 'message-sub',
-      client: {
-        projectId: 'vaulted-acolyte-348710',
-      },
-    }),
+    strategy: new GCPubSubServer(pubSubConfig),
   });
 
-  Logger.log('Starting application using following config:');
-  Logger.log(`Port: ${port}`);
-  Logger.log(`Is production: ${isProduction}`);
+  Logger.log(`Starting application on port ${port}...`);
 
   app.useWebSocketAdapter(new AuthenticatedSocketIoAdapter(app));
   await app.startAllMicroservices();
