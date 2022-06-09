@@ -28,7 +28,15 @@ export class Gateway implements OnGatewayConnection {
       client.join(channels);
 
       client.emit('join', {
-        message: 'connected to channels',
+        message: `connected to ${channels}`,
+      });
+    });
+
+    client.on('leave', (channels) => {
+      client.leave(channels);
+
+      client.emit('leave', {
+        message: `left ${channels}`,
       });
     });
   }
