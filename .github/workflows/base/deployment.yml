@@ -11,6 +11,8 @@ spec:
       labels:
         app: gateway
     spec:
+      imagePullSecrets:
+        - name: docker-registry
       serviceAccountName: gateway
       containers:
         - name: gateway
