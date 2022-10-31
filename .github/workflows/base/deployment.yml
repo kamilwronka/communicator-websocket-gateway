@@ -32,6 +32,11 @@ spec:
               value: "4000"
             - name: ENV
               value: dev
+            - name: JWT_ISSUER
+              valueFrom:
+                secretKeyRef:
+                  key: issuer
+                  name: auth
             # rabbitmq
             - name: RABBITMQ_HOST
               value: rabbitmq
