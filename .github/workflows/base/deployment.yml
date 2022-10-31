@@ -30,18 +30,28 @@ spec:
           env:
             - name: PORT
               value: "4000"
-            - name: HEALTH_CHECK_PORT
-              value: "4001"
             - name: ENV
               value: dev
+            # rabbitmq
+            - name: RABBITMQ_HOST
+              value: rabbitmq
+            - name: RABBITMQ_ACCESS_PORT
+              value: "5672"
+            - name: RABBITMQ_USER
+              value: user
+            - name: RABBITMQ_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: rabbitmq
+                  key: rabbitmq-password
 
           livenessProbe:
             httpGet:
               path: /healthz
-              port: 4001
+              port: 4000
 
           readinessProbe:
             tcpSocket:
-              port: 4001
+              port: 4000
             initialDelaySeconds: 20
             periodSeconds: 20

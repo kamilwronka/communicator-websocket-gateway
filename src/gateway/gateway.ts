@@ -5,12 +5,9 @@ import {
 } from '@nestjs/websockets';
 import { Server } from 'socket.io';
 import { CustomSocket } from 'src/adapters/socketio.adapter';
-import { configService } from 'src/config/config.service';
 import { GatewayService } from './gateway.service';
 
-const port = configService.getPort();
-
-@WebSocketGateway(port, {
+@WebSocketGateway({
   transports: ['websocket'],
   cors: true,
 })
