@@ -35,8 +35,8 @@ spec:
             - name: JWT_ISSUER
               valueFrom:
                 secretKeyRef:
-                  key: issuer
-                  name: auth
+                  key: key
+                  name: jwt-auth
             # rabbitmq
             - name: RABBITMQ_HOST
               value: rabbitmq
