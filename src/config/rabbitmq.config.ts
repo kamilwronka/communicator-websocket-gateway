@@ -9,8 +9,6 @@ export default registerAs('rabbitmq', (): IRabbitMqConfig => {
     RABBITMQ_ACCESS_PORT,
   } = process.env;
 
-  console.log(process.env);
-
   return {
     host: RABBITMQ_HOST,
     port: RABBITMQ_ACCESS_PORT,

@@ -20,8 +20,6 @@ async function bootstrap() {
     queue,
   } = configService.get<IRabbitMqConfig>('rabbitmq');
 
-  console.log(configService.get<IRabbitMqConfig>('rabbitmq'));
-
   app.connectMicroservice<MicroserviceOptions>({
     transport: Transport.RMQ,
     options: {
