@@ -2,6 +2,7 @@ import { INestApplicationContext } from '@nestjs/common';
 import { IoAdapter } from '@nestjs/platform-socket.io';
 import { ServerOptions, Socket } from 'socket.io';
 import { JwtService } from '@nestjs/jwt';
+import { AUTH_NAMESPACE } from 'src/constants/auth-namespace.constant';
 
 export interface CustomSocket extends Socket {
   userId: string;
@@ -22,7 +23,7 @@ export class AuthenticatedSocketIoAdapter extends IoAdapter {
       try {
         const verified =
           token && (await this.jwtService.verify(token.replace('Bearer ', '')));
-        socket.userId = verified.sub.replace('auth0|', '');
+        socket.userId = verified[AUTH_NAMESPACE]
 
         next();
       } catch (error) {
