@@ -1,23 +1,9 @@
-export enum EEnvironment {
-  LOCAL = 'local',
-  DEV = 'dev',
-  PROD = 'prod',
-}
-
-export interface IRabbitMqConfig {
-  host: string;
-  port: string;
-  password: string;
-  user: string;
-  queue: string;
-}
-
-export interface IAppConfig {
+export interface AppConfig {
   env: string;
   port: number;
 }
 
-export interface IAuthConfig {
+export interface AuthConfig {
   issuer: string;
   cache: boolean;
   rateLimit: boolean;

@@ -1,40 +1,131 @@
 import {
+  UseFilters,
+  UseGuards,
+  UsePipes,
+  ValidationPipe,
+} from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
+import {
+  BaseWsExceptionFilter,
+  ConnectedSocket,
+  MessageBody,
   OnGatewayConnection,
+  SubscribeMessage,
   WebSocketGateway,
   WebSocketServer,
 } from '@nestjs/websockets';
-import { Server } from 'socket.io';
-import { CustomSocket } from 'src/adapters/socketio.adapter';
-import { GatewayService } from './gateway.service';
+import { nanoid } from 'nanoid';
+import { Server, Socket } from 'socket.io';
+import { AUTH_NAMESPACE } from 'src/constants/auth-namespace.constant';
+import { GatewayEventsGuard } from 'src/guards/gateway-events.guard';
+import { IdentifyDto } from './dto/identify.dto';
+import { JoinServerDto } from './dto/join-server.dto';
+import { RequestServerPresenceDto } from './dto/request-server-presence.dto';
+import { GatewayEvents } from './enums/gateway-event.enum';
+
+interface User {
+  user: UserData;
+}
+
+type UserData = {
+  id: string;
+  sessionId: string;
+  status: 'offline' | 'online';
+};
 
 @WebSocketGateway({
   transports: ['websocket'],
   cors: true,
 })
 export class Gateway implements OnGatewayConnection {
-  constructor(private gatewayService: GatewayService) {}
+  constructor(private jwtService: JwtService) {}
 
   @WebSocketServer()
   public server: Server;
 
-  handleConnection(client: CustomSocket) {
-    // connecting to users private room which is his ID
-    client.join(client.userId);
+  handleConnection(client: Socket & User) {
+    client.on(GatewayEvents.DISCONNECTING, () => {
+      if (client.user) {
+        client
+          .to([...client.rooms])
+          .emit(GatewayEvents.SERVER_PRESENCE_UPDATE, {
+            id: client.user.id,
+            status: 'offline',
+          });
+      }
+    });
+  }
 
-    client.on('join', (channels) => {
-      client.join(channels);
+  @UseFilters(new BaseWsExceptionFilter())
+  @UsePipes(new ValidationPipe())
+  @SubscribeMessage(GatewayEvents.IDENTIFY)
+  async identify(
+    @MessageBody() data: IdentifyDto,
+    @ConnectedSocket() client: User & Socket,
+  ) {
+    const verified = await this.jwtService.verifyAsync(
+      data.token.replace('Bearer ', ''),
+    );
+    const userId = verified[AUTH_NAMESPACE];
+    const user: UserData = {
+      id: userId,
+      sessionId: nanoid(),
+      status: 'online',
+      // save all the data, ex on what events user should listen
+    };
 
-      client.emit('join', {
-        message: `connected to ${channels}`,
-      });
+    client.user = user;
+
+    client.emit(GatewayEvents.IDENTIFY, { sessionId: user.sessionId });
+  }
+
+  @UseGuards(GatewayEventsGuard)
+  @UseFilters(new BaseWsExceptionFilter())
+  @UsePipes(new ValidationPipe())
+  @SubscribeMessage(GatewayEvents.SERVER_JOIN)
+  async join(
+    @MessageBody() { serverId }: JoinServerDto,
+    @ConnectedSocket() client: User & Socket,
+  ) {
+    if (!serverId) {
+      return;
+    }
+
+    if (client.rooms.has(serverId)) {
+      return;
+    }
+
+    client.join(serverId);
+    client.to(serverId).emit(GatewayEvents.SERVER_PRESENCE_UPDATE, {
+      id: client.user.id,
+      status: client.user.status,
     });
 
-    client.on('leave', (channels) => {
-      client.leave(channels);
+    client.emit(GatewayEvents.SERVER_JOIN, { status: 'ok' });
+  }
 
-      client.emit('leave', {
-        message: `left ${channels}`,
+  @UseGuards(GatewayEventsGuard)
+  @UseFilters(new BaseWsExceptionFilter())
+  @UsePipes(new ValidationPipe())
+  @SubscribeMessage(GatewayEvents.SERVER_PRESENCE_REQUEST)
+  async requestServerPresence(
+    @MessageBody() { serverId }: RequestServerPresenceDto,
+    @ConnectedSocket() client: User & Socket,
+  ) {
+    if (!client.rooms.has(serverId)) {
+      return;
+    }
+
+    const clients = this.server.sockets.adapter.rooms.get(serverId);
+    const users = [];
+
+    if (clients) {
+      clients.forEach((id) => {
+        const user = this.server.sockets.sockets.get(id)['user'] as UserData;
+        users.push({ id: user.id, status: user.status });
       });
-    });
+    }
+
+    client.emit(GatewayEvents.SERVER_PRESENCE_REQUEST, users);
   }
 }

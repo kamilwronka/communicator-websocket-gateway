@@ -24,6 +24,7 @@
     "minimist": "1.2.6"
   },
   "dependencies": {
+    "@golevelup/nestjs-rabbitmq": "^3.4.0",
     "@nestjs/common": "^9.1.6",
     "@nestjs/config": "^2.2.0",
     "@nestjs/core": "^9.1.6",
@@ -34,9 +35,12 @@
     "@nestjs/websockets": "^9.1.6",
     "amqp-connection-manager": "^4.1.9",
     "amqplib": "^0.10.3",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.13.2",
     "dotenv": "^16.0.3",
     "joi": "^17.6.4",
     "jwks-rsa": "^2.1.5",
+    "nanoid": "^3.3.4",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^7.5.7",

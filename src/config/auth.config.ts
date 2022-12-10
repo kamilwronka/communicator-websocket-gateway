@@ -1,7 +1,7 @@
 import { registerAs } from '@nestjs/config';
-import { IAuthConfig } from './types';
+import { AuthConfig } from './types';
 
-export default registerAs('auth', (): IAuthConfig => {
+export default registerAs('auth', (): AuthConfig => {
   const { JWT_ISSUER } = process.env;
 
   return {
