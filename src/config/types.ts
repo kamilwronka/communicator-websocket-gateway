@@ -8,4 +8,5 @@ export interface AuthConfig {
   cache: boolean;
   rateLimit: boolean;
   jwksRequestsPerMinute: 5;
+  jwksUri: string;
 }

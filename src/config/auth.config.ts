@@ -9,5 +9,6 @@ export default registerAs('auth', (): AuthConfig => {
     cache: true,
     rateLimit: true,
     jwksRequestsPerMinute: 5,
+    jwksUri: `${JWT_ISSUER}.well-known/jwks.json`,
   };
 });

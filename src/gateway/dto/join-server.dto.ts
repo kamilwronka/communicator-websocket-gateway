@@ -1,7 +1,7 @@
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsArray, IsNotEmpty } from 'class-validator';
 
 export class JoinServerDto {
   @IsNotEmpty()
-  @IsString()
-  serverId: string;
+  @IsArray()
+  serverIds: string[];
 }

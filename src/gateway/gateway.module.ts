@@ -6,6 +6,8 @@ import { RabbitMQConfig, RabbitMQModule } from '@golevelup/nestjs-rabbitmq';
 import { JwtModule } from '@nestjs/jwt';
 import { AuthConfig } from 'src/config/types';
 import { JwksClient } from 'jwks-rsa';
+import { ChannelsService } from './services/channels.service';
+import { ServersService } from './services/servers.service';
 @Module({
   imports: [
     RabbitMQModule.forRootAsync(RabbitMQModule, {
@@ -19,14 +21,14 @@ import { JwksClient } from 'jwks-rsa';
     JwtModule.registerAsync({
       inject: [ConfigService],
       useFactory: async (configService: ConfigService) => {
-        const { issuer, cache, rateLimit, jwksRequestsPerMinute } =
+        const { issuer, cache, rateLimit, jwksRequestsPerMinute, jwksUri } =
           configService.get<AuthConfig>('auth');
 
         const client = new JwksClient({
           cache,
           rateLimit,
           jwksRequestsPerMinute,
-          jwksUri: `${issuer}.well-known/jwks.json`,
+          jwksUri,
         });
         const keys = await client.getSigningKeys();
         const key = keys.find((key) => {
@@ -43,7 +45,7 @@ import { JwksClient } from 'jwks-rsa';
       },
     }),
   ],
-  providers: [GatewayService, Gateway],
+  providers: [GatewayService, Gateway, ChannelsService, ServersService],
   controllers: [],
 })
 export class GatewayModule {}

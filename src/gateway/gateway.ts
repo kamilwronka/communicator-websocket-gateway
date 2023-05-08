@@ -74,6 +74,8 @@ export class Gateway implements OnGatewayConnection {
       // save all the data, ex on what events user should listen
     };
 
+    console.log('identified');
+
     client.user = user;
 
     client.emit(GatewayEvents.IDENTIFY, { sessionId: user.sessionId });
@@ -84,19 +86,21 @@ export class Gateway implements OnGatewayConnection {
   @UsePipes(new ValidationPipe())
   @SubscribeMessage(GatewayEvents.SERVER_JOIN)
   async join(
-    @MessageBody() { serverId }: JoinServerDto,
+    @MessageBody() { serverIds }: JoinServerDto,
     @ConnectedSocket() client: User & Socket,
   ) {
-    if (!serverId) {
+    if (!serverIds && serverIds.length > 0) {
       return;
     }
 
-    if (client.rooms.has(serverId)) {
+    const filteredServerIds = serverIds.filter((id) => !client.rooms.has(id));
+
+    if (filteredServerIds.length <= 0) {
       return;
     }
 
-    client.join(serverId);
-    client.to(serverId).emit(GatewayEvents.SERVER_PRESENCE_UPDATE, {
+    client.join(filteredServerIds);
+    client.to(filteredServerIds).emit(GatewayEvents.SERVER_PRESENCE_UPDATE, {
       id: client.user.id,
       status: client.user.status,
     });
