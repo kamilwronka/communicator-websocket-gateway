@@ -21,6 +21,9 @@ export class ChannelsService {
   })
   async handleChannelCreate(data: any) {
     console.log('hehe create');
+    this.gateway.server
+      .to(data.serverId)
+      .emit(GatewayEvents.SERVER_CHANNEL_CREATE, data);
   }
 
   @RabbitSubscribe({
@@ -31,6 +34,9 @@ export class ChannelsService {
   })
   async handleChannelUpdate(data: any) {
     console.log('hehe create');
+    this.gateway.server
+      .to(data.serverId)
+      .emit(GatewayEvents.SERVER_CHANNEL_UPDATE, data);
   }
 
   @RabbitSubscribe({
@@ -41,6 +47,9 @@ export class ChannelsService {
   })
   async handleChannelDelete(data: any) {
     console.log('hehe create');
+    this.gateway.server
+      .to(data.serverId)
+      .emit(GatewayEvents.SERVER_MESSAGE_DELETE, data);
   }
 
   @RabbitSubscribe({
@@ -63,8 +72,11 @@ export class ChannelsService {
     queue: Queues.MESSAGE_UPDATE,
     errorBehavior: MessageHandlerErrorBehavior.NACK,
   })
-  async handleMessageUpdate(data: any) {
+  async handleMessageUpdate(data: Message) {
     console.log('hehe create');
+    this.gateway.server
+      .to(data.serverId)
+      .emit(GatewayEvents.SERVER_MESSAGE_UPDATE, data);
   }
 
   @RabbitSubscribe({
@@ -75,6 +87,9 @@ export class ChannelsService {
   })
   async handleMessageDelete(data: any) {
     console.log('hehe create');
+    this.gateway.server
+      .to(data.serverId)
+      .emit(GatewayEvents.SERVER_MESSAGE_DELETE, data);
   }
 
   @RabbitSubscribe({
@@ -85,6 +100,9 @@ export class ChannelsService {
   })
   async handleMessageReactionAdd(data: any) {
     console.log('hehe create');
+    this.gateway.server
+      .to(data.serverId)
+      .emit(GatewayEvents.SERVER_MESSAGE_REACTION_ADD, data);
   }
 
   @RabbitSubscribe({
@@ -95,5 +113,8 @@ export class ChannelsService {
   })
   async handleMessageReactionDelete(data: any) {
     console.log('hehe create');
+    this.gateway.server
+      .to(data.serverId)
+      .emit(GatewayEvents.SERVER_MESSAGE_REACTION_DELETE, data);
   }
 }
