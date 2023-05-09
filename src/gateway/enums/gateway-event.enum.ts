@@ -22,4 +22,9 @@ export enum GatewayEvents {
   DIRECT_MESSAGE_SEND = 'direct-message-send',
   DIRECT_MESSAGE_UPDATE = 'direct-message-update',
   DIRECT_MESSAGE_DELETE = 'direct-message-delete',
+
+  // relationships
+  USERS_RELATIONSHIPS_CREATE = 'users-relationships-create',
+  USERS_RELATIONSHIPS_UPDATE = 'users-relationships-update',
+  USERS_RELATIONSHIPS_DELETE = 'users-relationships-delete',
 }

@@ -86,7 +86,7 @@ export class Gateway implements OnGatewayConnection {
   @UsePipes(new ValidationPipe())
   @SubscribeMessage(GatewayEvents.SERVER_JOIN)
   async join(
-    @MessageBody() { serverIds }: JoinServerDto,
+    @MessageBody() { serverIds, channelIds }: JoinServerDto,
     @ConnectedSocket() client: User & Socket,
   ) {
     if (!serverIds && serverIds.length > 0) {
@@ -94,12 +94,15 @@ export class Gateway implements OnGatewayConnection {
     }
 
     const filteredServerIds = serverIds.filter((id) => !client.rooms.has(id));
+    const filteredChannelIds = channelIds.filter((id) => !client.rooms.has(id));
 
-    if (filteredServerIds.length <= 0) {
+    if (filteredServerIds.length <= 0 && filteredChannelIds.length <= 0) {
       return;
     }
 
     client.join(filteredServerIds);
+    client.join(filteredChannelIds);
+
     client.to(filteredServerIds).emit(GatewayEvents.SERVER_PRESENCE_UPDATE, {
       id: client.user.id,
       status: client.user.status,

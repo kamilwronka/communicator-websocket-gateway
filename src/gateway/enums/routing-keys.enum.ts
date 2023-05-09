@@ -15,6 +15,11 @@ export enum RoutingKeys {
   USER_UPDATE = 'user.update',
   USER_DELETE = 'user.delete',
 
+  // relationships
+  USERS_RELATIONSHIPS_CREATE = 'user.relationship.create',
+  USERS_RELATIONSHIPS_UPDATE = 'user.relationship.update',
+  USERS_RELATIONSHIPS_DELETE = 'user.relationship.delete',
+
   // channels
   CHANNEL_CREATE = 'channel.create',
   CHANNEL_UPDATE = 'channel.update',

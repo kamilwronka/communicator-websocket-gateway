@@ -3,9 +3,9 @@ import {
   RabbitSubscribe,
 } from '@golevelup/nestjs-rabbitmq';
 import { Injectable } from '@nestjs/common';
-import { Queues } from './dto/queues.enum';
-import { RoutingKeys } from './dto/routing-keys.enum';
 import { Gateway } from './gateway';
+import { RoutingKeys } from './enums/routing-keys.enum';
+import { Queues } from './enums/queues.enum';
 
 @Injectable()
 export class GatewayService {

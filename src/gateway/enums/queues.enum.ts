@@ -26,4 +26,9 @@ export enum Queues {
   MESSAGE_DELETE = 'gateway-message-delete',
   MESSAGE_REACTION_ADD = 'gateway-message-reaction-add',
   MESSAGE_REACTION_DELETE = 'gateway-message-reaction-delete',
+
+  // relationships
+  USERS_RELATIONSHIPS_CREATE = 'gateway-user-relationship-create',
+  USERS_RELATIONSHIPS_UPDATE = 'gateway-user-relationship-update',
+  USERS_RELATIONSHIPS_DELETE = 'gateway-user-relationship-delete',
 }

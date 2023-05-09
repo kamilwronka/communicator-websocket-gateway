@@ -61,9 +61,15 @@ export class ChannelsService {
   async handleMessageSend(data: Message) {
     console.log(data);
     console.log('hehe create');
-    this.gateway.server
-      .to(data.serverId)
-      .emit(GatewayEvents.SERVER_MESSAGE_SEND, data);
+    if (data.serverId) {
+      this.gateway.server
+        .to(data.serverId)
+        .emit(GatewayEvents.SERVER_MESSAGE_SEND, data);
+    } else {
+      this.gateway.server
+        .to(data.channelId)
+        .emit(GatewayEvents.DIRECT_MESSAGE_SEND, data);
+    }
   }
 
   @RabbitSubscribe({

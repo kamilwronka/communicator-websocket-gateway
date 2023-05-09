@@ -8,6 +8,7 @@ import { AuthConfig } from 'src/config/types';
 import { JwksClient } from 'jwks-rsa';
 import { ChannelsService } from './services/channels.service';
 import { ServersService } from './services/servers.service';
+import { UsersService } from './services/users.service';
 @Module({
   imports: [
     RabbitMQModule.forRootAsync(RabbitMQModule, {
@@ -45,7 +46,13 @@ import { ServersService } from './services/servers.service';
       },
     }),
   ],
-  providers: [GatewayService, Gateway, ChannelsService, ServersService],
+  providers: [
+    GatewayService,
+    Gateway,
+    ChannelsService,
+    ServersService,
+    UsersService,
+  ],
   controllers: [],
 })
 export class GatewayModule {}
