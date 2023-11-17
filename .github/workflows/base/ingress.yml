@@ -11,11 +11,11 @@ metadata:
 spec:
   tls:
     - hosts:
-        - dev.gateway.communicator.kamilwronka.com
+        - dev-gateway-communicator.lootlog.pl
       secretName: tls
   ingressClassName: kong
   rules:
-    - host: dev.gateway.communicator.kamilwronka.com
+    - host: dev-gateway-communicator.lootlog.pl
       http:
         paths:
           - path: /
